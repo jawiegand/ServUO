@@ -840,13 +840,13 @@ namespace Server
                     case 0:
                         return m_Cap;
                     case 1:
-                        return m_Cap * m_Cap;
+                        goto case 2;
                     case 2:
-                        return m_Cap * m_Cap * m_Cap;
-                    case 4:
+                        return m_Cap + (m_Cap * Owner.PrestigeLevel);
+                    case 3:
                         return 70000;
                     default:
-                        return m_Cap;
+                        return 0;
 		        }
 		    }
 		    set { m_Cap = value; } }

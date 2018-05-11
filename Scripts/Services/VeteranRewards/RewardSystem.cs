@@ -15,7 +15,9 @@ namespace Server.Engines.VeteranRewards
     {
         public static bool Enabled = Config.Get("VetRewards.Enabled", true);
         public static bool SkillCapRewards = Config.Get("VetRewards.SkillCapRewards", true);
-        public static int SkillCap = Config.Get("PlayerCaps.TotalSkillCap", 7000);
+        // TODO: Re-implement this, see prestige levels
+        //public static int SkillCap = Config.Get("PlayerCaps.TotalSkillCap", 7000);
+        public static int SkillCap = 7000;
         public static int SkillCapBonus = Config.Get("VetRewards.SkillCapBonus", 200);
         public static int SkillCapBonusLevels = Config.Get("VetRewards.SkillCapBonusLevels", 4);
         public static float SkillCapBonusIncrement = SkillCapBonus / SkillCapBonusLevels;

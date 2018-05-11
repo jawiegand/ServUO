@@ -177,6 +177,25 @@ namespace Server.Misc
             if (from is BaseCreature && ((BaseCreature)from).Controlled)
                 gc *= 2;
 
+            // Adjust difficulty if player is on prestige mode
+            if (from.PrestigeLevel != 0)
+            {
+                // TODO: Allow this to be driven by a config.
+                switch (from.PrestigeLevel)
+                {
+                    case 1:
+                        gc /= 2.0;
+                        break;
+                    case 2:
+                        gc /= 4.0;
+                        break;
+                    case 3:
+                        gc /= 10.0;
+                        break;
+                }
+            }
+
+
             if (AllowGain(from, skill, amObj))
             {
                 if (from.Alive && (gc >= Utility.RandomDouble() || skill.Base < 10.0 || CheckGGS(from, skill)))

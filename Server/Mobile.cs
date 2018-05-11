@@ -729,6 +729,7 @@ namespace Server
 		}
 
 		#region Var declarations
+	    private int m_PrestigeLevel;
 		private Serial m_Serial;
 		private Map m_Map;
 		private Point3D m_Location;
@@ -1489,6 +1490,23 @@ namespace Server
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int SkillsTotal { get { return m_Skills == null ? 0 : m_Skills.Total; } }
+
+	    /// <summary>
+	    /// Determines the prestige level of the player. Prestige level will raise the player's skill cap, but
+	    /// will increase the difficulty of earning skills.
+	    /// </summary>
+	    [CommandProperty(AccessLevel.GameMaster)]
+	    public int PrestigeLevel
+	    {
+	        get { return m_PrestigeLevel; }
+	        set
+	        {
+	            if (value >= 0 && value <= 3)
+	            {
+	                m_PrestigeLevel = value;
+	            }
+	        }
+	    }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int SkillsCap
@@ -5800,6 +5818,9 @@ namespace Server
 
 			switch (version)
 			{
+                case 35:
+                    m_PrestigeLevel = reader.ReadInt();
+                    goto case 34;
                 case 34:
                     {
 						m_StrCap = reader.ReadInt();
@@ -6339,7 +6360,9 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(34); // version
+			writer.Write(35); // version
+
+            writer.Write(m_PrestigeLevel);
 
 			writer.Write(m_StrCap);
 			writer.Write(m_DexCap);
@@ -11005,6 +11028,7 @@ namespace Server
 
 		public void DefaultMobileInit()
 		{
+		    m_PrestigeLevel = 0;
             m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
             m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
             m_DexCap = Config.Get("PlayerCaps.DexCap", 125);

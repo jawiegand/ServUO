@@ -156,7 +156,7 @@ namespace Server.Engines.Reports
             {
                 // TODO: Re-implement this, see prestige levels
                 //if (mob.SkillsTotal >= 1500 && mob.SkillsTotal <= (Config.Get("PlayerCaps.TotalSkillCap", 7000) + 200) && mob is PlayerMobile)
-                if (mob.SkillsTotal >= 1500 && mob.SkillsTotal <= 7400 && mob is PlayerMobile)
+                if (mob.SkillsTotal >= 1500 && mob.SkillsTotal <= 7200 && mob is PlayerMobile)
                 {
                     Skills skills = mob.Skills;
 

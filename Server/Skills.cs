@@ -831,7 +831,25 @@ namespace Server
 		#endregion
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-		public int Cap { get { return m_Cap; } set { m_Cap = value; } }
+		public int Cap {
+		    get
+		    {
+                // TODO: Eventually have a way to dynamically allocate these based on config.
+		        switch (Owner.PrestigeLevel)
+		        {
+                    case 0:
+                        return m_Cap;
+                    case 1:
+                        return m_Cap * m_Cap;
+                    case 2:
+                        return m_Cap * m_Cap * m_Cap;
+                    case 4:
+                        return 70000;
+                    default:
+                        return m_Cap;
+		        }
+		    }
+		    set { m_Cap = value; } }
 
         [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
         public SkillName CurrentMastery
@@ -983,7 +1001,9 @@ namespace Server
 		public Skills(Mobile owner)
 		{
 			m_Owner = owner;
-            m_Cap = Config.Get("PlayerCaps.TotalSkillCap", 7000); ;
+            // Ignore custom caps. TODO: Re-implement this with all the additional math
+            //m_Cap = Config.Get("PlayerCaps.TotalSkillCap", 7000);
+		    m_Cap = 7000;
 
 			var info = SkillInfo.Table;
 

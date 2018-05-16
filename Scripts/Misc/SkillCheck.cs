@@ -616,7 +616,7 @@ namespace Server.Misc
 
         private static bool CheckGGS(Mobile from, Skill skill)
         {
-            if (!GGSActive)
+            if (!GGSActive || from.PrestigeLevel > 0)
                 return false;
 
             if (from is PlayerMobile && skill.NextGGSGain < DateTime.UtcNow)

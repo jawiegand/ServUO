@@ -11,7 +11,7 @@
     * Level 0 - Base (770) skill cap, no bonus, OSI difficulty
     * Level 1 - 1440 skill cap, + 2x OSI difficulty
     * Level 2 - 2100 skill cap, +150 luck, + 4x OSI difficulty
-    * Level 3 - unlimited (70000) skill cap, + 150 luck, 10% bonus to base Hits/Mana/Stam, varaible difficulty
+    * Level 3 - unlimited (70000) skill cap, +150 luck, 10% bonus to base Hits/Mana/Stam, varaible difficulty
         * If a skill is 60.0 or below difficuly is 4x OSI
         * If a skill is 80.0 or below difficuly is 6x OSI
         * If a skill is 100.0 of below difficuly is 8x OSI

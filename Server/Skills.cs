@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using Server.Configs;
 using Server.Network;
 #endregion
 
@@ -834,17 +834,19 @@ namespace Server
 		public int Cap {
 		    get
 		    {
-                // TODO: Eventually have a way to dynamically allocate these based on config.
+                if (!PrestigeLevelConfig.IsEnabled)
+                    return m_Cap;
+
 		        switch (Owner.PrestigeLevel)
 		        {
                     case 0:
-                        return m_Cap;
+                        return PrestigeLevelConfig.BaseSkillCap;
                     case 1:
-                        goto case 2;
+                        return PrestigeLevelConfig.LevelOneSkillCap;
                     case 2:
-                        return m_Cap + (m_Cap * Owner.PrestigeLevel);
+                        return PrestigeLevelConfig.LevelTwoSkillCap;
                     case 3:
-                        return 70000;
+                        return PrestigeLevelConfig.LevelThreeSkillCap;
                     default:
                         return 0;
 		        }
@@ -1001,9 +1003,7 @@ namespace Server
 		public Skills(Mobile owner)
 		{
 			m_Owner = owner;
-            // Ignore custom caps. TODO: Re-implement this with all the additional math
-            //m_Cap = Config.Get("PlayerCaps.TotalSkillCap", 7000);
-		    m_Cap = 7000;
+            m_Cap = PrestigeLevelConfig.IsEnabled ? PrestigeLevelConfig.BaseSkillCap : Config.Get("PlayerCaps.TotalSkillCap", 7000);
 
 			var info = SkillInfo.Table;
 

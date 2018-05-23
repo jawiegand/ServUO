@@ -31,3 +31,4 @@ reportHistory.xml
 drng64.dll
 drng32.dll
 libdrng.so
+*.swp

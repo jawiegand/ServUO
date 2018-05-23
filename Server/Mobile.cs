@@ -17,6 +17,7 @@ using CustomsFramework;
 
 using Server.Accounting;
 using Server.Commands;
+using Server.Configs;
 using Server.ContextMenus;
 using Server.Guilds;
 using Server.Gumps;
@@ -728,8 +729,8 @@ namespace Server
 			}
 		}
 
-		#region Var declarations
-	    private int m_PrestigeLevel;
+        #region Var declarations
+        private int m_PrestigeLevel;
 		private Serial m_Serial;
 		private Map m_Map;
 		private Point3D m_Location;
@@ -1611,7 +1612,30 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.Decorator)]
-		public int NameHue { get { return m_NameHue; } set { m_NameHue = value; } }
+		public int NameHue
+        {
+            get
+            {
+                if (!PrestigeLevelConfig.IsEnabled)
+                    return m_NameHue;
+
+                switch (PrestigeLevel)
+                {
+                    case 1:
+                        return 2143; // Coper
+                    case 2:
+                        return 335; // Ice Red
+                    case 3:
+                        return 2167; // Tyrian Purple
+                    default:
+                        return m_NameHue;
+                }
+            }
+            set
+            {
+                m_NameHue = value;
+            }
+        }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int Hunger
@@ -12640,7 +12664,14 @@ namespace Server
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int StatCap
 		{
-			get { return m_StatCap; }
+			get
+            {
+                if (!PrestigeLevelConfig.IsEnabled || PrestigeLevel < 3)
+                    return m_StatCap;
+
+                return m_StatCap + PrestigeLevelConfig.StatBonus;
+
+            }
 			set
 			{
 				if (m_StatCap != value)

@@ -2,19 +2,14 @@
 // ServUO - ScrollOfPrestige.cs
 // **********
 
+using Server.Configs;
+using System;
+
 namespace Server.Items
 {
     public class ScrollOfPrestige : Item
     {
         private int m_Level;
-
-        /// <summary>
-        /// The level (1,2,3) of the scroll
-        /// </summary>
-        public int Level
-        {
-            get { return m_Level; }
-        }
 
         /// <summary>
         /// Ctor for creating item.
@@ -60,7 +55,7 @@ namespace Server.Items
             // Version
             writer.Write(1);
 
-            writer.Write(Level);
+            writer.Write(m_Level);
         }
 
         /// <summary>
@@ -91,10 +86,54 @@ namespace Server.Items
                 return;
             }
 
-            if (CanUse(from.SkillsTotal, from.PrestigeLevel))
+            if (PrestigeLevelConfig.IsEnabled && CanUse(from.SkillsTotal, from.PrestigeLevel))
             {
-                from.PrestigeLevel = Level;
-                Consume();
+                from.PrestigeLevel = m_Level;
+
+                #region Animation
+                // Same animation as PowerScroll
+                Effects.SendLocationParticles(EffectItem.Create(from.Location, from.Map, EffectItem.DefaultDuration), 0, 0, 0, 0, 0, 5060, 0);
+                Effects.PlaySound(from.Location, from.Map, 0x243);
+
+                Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 6, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 4, from.Y - 6, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+                Effects.SendMovingParticles(new Entity(Serial.Zero, new Point3D(from.X - 6, from.Y - 4, from.Z + 15), from.Map), from, 0x36D4, 7, 0, false, true, 0x497, 0, 9502, 1, 0, (EffectLayer)255, 0x100);
+
+                Effects.SendTargetParticles(from, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
+                #endregion
+
+                switch (m_Level)
+                {
+                    case 1:
+                        from.SendMessage("You've reached Prestige Level 1!");
+                        from.SendMessage(String.Format("Skill Cap: {0}", from.SkillsCap));
+                        from.SendMessage(String.Format("You can now use Scrolls Of Power up to skill {0}",
+                            PrestigeLevelConfig.LevelOnePowerScrollMax));
+                        from.SendMessage(String.Format("The skill gain difficulty has increased by {0}x of base",
+                            PrestigeLevelConfig.LevelOneDifficulty));
+                        break;
+                    case 2:
+                        from.SendMessage("You've reached Prestige Level 2!");
+                        from.SendMessage(String.Format("Skill Cap: {0}", from.SkillsCap)); 
+                        from.SendMessage(String.Format("You can now use Scrolls Of Power up to skill {0}",
+                            PrestigeLevelConfig.LevelTwoPowerScrollMax));
+                        from.SendMessage(String.Format("The skill gain difficulty has increased by {0}x of base",
+                            PrestigeLevelConfig.LevelTwoDifficulty));
+                        from.SendMessage("Base Luck 150");
+                        break;
+                    case 3:
+                        from.SendMessage("You've reached Prestige Level 3!");
+                        from.SendMessage(String.Format("Skill Cap: {0}", from.SkillsCap));
+                        from.SendMessage("You can now use any Scrolls Of Power");
+                        from.SendMessage(String.Format("The skill gain difficulty has increased by {0}x to {1}x of base",
+                            PrestigeLevelConfig.MaxOneDifficulty, PrestigeLevelConfig.MaxDifficulty));
+                        from.SendMessage("Base Luck 150");
+                        from.SendMessage(String.Format("Stat Cap: {0}", from.StatCap)); 
+                        from.SendMessage("Hits/Mana/Stam all increased by a total of 10%");
+                        break;
+                }
+                Delete();
+
             }
             else
             {
@@ -102,20 +141,24 @@ namespace Server.Items
             }
         }
 
-        // TODO: come up with a sane way to share these limits from server.
         private bool CanUse(int skillTotal, int prestigeLevel)
         {
-            switch (Level)
+            if (prestigeLevel == m_Level - 1)
             {
-                case 1:
-                    return skillTotal == 7000 && prestigeLevel == 0;
-                case 2:
-                    return skillTotal == 14000 && prestigeLevel == 1;
-                case 3:
-                    return skillTotal == 21000 && prestigeLevel == 2;
-                default:
-                    return false;
+                switch (m_Level)
+                {
+                    case 1:
+                        return skillTotal >= PrestigeLevelConfig.BaseSkillCap;
+                    case 2:
+                        return skillTotal >= PrestigeLevelConfig.LevelOneSkillCap;
+                    case 3:
+                        return skillTotal >= PrestigeLevelConfig.LevelTwoSkillCap;
+                    default:
+                        return false;
+                }
             }
+
+            return false;
         }
     }
 }

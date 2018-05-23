@@ -4,6 +4,7 @@ using Server.Factions;
 using Server.Mobiles;
 using Server.Items;
 using Server.Spells.SkillMasteries;
+using Server.Configs;
 
 namespace Server.Misc
 {
@@ -178,19 +179,18 @@ namespace Server.Misc
                 gc *= 2;
 
             // Adjust difficulty if player is on prestige mode
-            if (from.PrestigeLevel != 0)
+            if (PrestigeLevelConfig.IsEnabled && from.PrestigeLevel != 0)
             {
-                // TODO: Allow this to be driven by a config.
                 switch (from.PrestigeLevel)
                 {
                     case 1:
-                        gc /= 2.0;
+                        gc /= PrestigeLevelConfig.LevelOneDifficulty;
                         break;
                     case 2:
-                        gc /= 4.0;
+                        gc /= PrestigeLevelConfig.LevelTwoDifficulty;
                         break;
                     case 3:
-                        gc /= 10.0;
+                        gc /= DetermineSkillsFactorForMaxPrestige(skill);
                         break;
                 }
             }
@@ -383,6 +383,24 @@ namespace Server.Misc
 					TryStatGain(info, from);
 				}
             }
+        }
+
+        private static double DetermineSkillsFactorForMaxPrestige(Skill skill)
+        {
+            if (skill.Base < 60.0)
+            {
+                return PrestigeLevelConfig.MaxOneDifficulty;
+            }
+            else if (skill.Base < 80.0)
+            {
+                return PrestigeLevelConfig.MaxTwoDifficulty;
+            }
+            else if(skill.Base < 100.0)
+            {
+                return PrestigeLevelConfig.MaxThreeDifficulty;
+            }
+
+            return PrestigeLevelConfig.MaxDifficulty;
         }
 
         private static void CheckReduceSkill(PlayerMobile pm, Skills skills, int toGain, Skill gainSKill)
@@ -616,7 +634,7 @@ namespace Server.Misc
 
         private static bool CheckGGS(Mobile from, Skill skill)
         {
-            if (!GGSActive || from.PrestigeLevel > 0)
+            if (!GGSActive || (PrestigeLevelConfig.IsEnabled && from.PrestigeLevel > 0))
                 return false;
 
             if (from is PlayerMobile && skill.NextGGSGain < DateTime.UtcNow)

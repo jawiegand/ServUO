@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Server.Accounting;
 using Server.Commands;
+using Server.Configs;
 using Server.Factions;
 using Server.Mobiles;
 using Server.Network;
@@ -152,11 +153,12 @@ namespace Server.Engines.Reports
             for (int i = 0; i < distribs.Length; ++i)
                 distribs[i] = new SkillDistribution(SkillInfo.Table[i]);
 
+            int totalSkillCap = PrestigeLevelConfig.IsEnabled ? PrestigeLevelConfig.LevelThreeSkillCap :
+                Config.Get("PlayerCaps.TotalSkillCap", 7000);
+
             foreach (Mobile mob in World.Mobiles.Values)
             {
-                // TODO: Re-implement this, see prestige levels
-                //if (mob.SkillsTotal >= 1500 && mob.SkillsTotal <= (Config.Get("PlayerCaps.TotalSkillCap", 7000) + 200) && mob is PlayerMobile)
-                if (mob.SkillsTotal >= 1500 && mob.SkillsTotal <= 7200 && mob is PlayerMobile)
+                if (mob.SkillsTotal >= 1500 && mob.SkillsTotal <= (totalSkillCap + 200) && mob is PlayerMobile)
                 {
                     Skills skills = mob.Skills;
 

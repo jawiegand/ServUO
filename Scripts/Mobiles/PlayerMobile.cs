@@ -48,6 +48,7 @@ using Server.Engines.VvV;
 
 using RankDefinition = Server.Guilds.RankDefinition;
 using Server.Engines.SphynxFortune;
+using Server.Configs;
 #endregion
 
 namespace Server.Mobiles
@@ -1908,20 +1909,32 @@ namespace Server.Mobiles
 					strBase = RawStr;
 				}
 
-				return (strBase / 2) + 50 + strOffs;
+				int hitsMax = (strBase / 2) + 50 + strOffs;
+
+                return PrestigeLevel > 2 ? (int)(hitsMax * 1.10) : hitsMax;
 			}
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public override int StamMax { get { return base.StamMax + AosAttributes.GetValue(this, AosAttribute.BonusStam); } }
+		public override int StamMax
+        {
+            get
+            {
+                int stamMax = base.StamMax + AosAttributes.GetValue(this, AosAttribute.BonusStam);
+
+                return PrestigeLevel > 2 ? (int)(stamMax * 1.10) : stamMax;
+            }
+        }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public override int ManaMax { get
 		{
-			return base.ManaMax + AosAttributes.GetValue(this, AosAttribute.BonusMana) +
+			int manaMax =  base.ManaMax + AosAttributes.GetValue(this, AosAttribute.BonusMana) +
 				   ((Core.ML && Race == Race.Elf) ? 20 : 0) +
                    MasteryInfo.IntuitionBonus(this) +
                    UraliTranceTonic.GetManaBuff(this);
+
+                return PrestigeLevel > 2 ? (int)(manaMax  * 1.10) : manaMax;
 		} }
 		#endregion
 
@@ -4226,7 +4239,15 @@ namespace Server.Mobiles
 
 		public List<Mobile> PermaFlags { get { return m_PermaFlags; } }
 
-        public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck) + TenthAnniversarySculpture.GetLuckBonus(this); } }
+	    public override int Luck
+	    {
+	        get
+	        {
+	            return AosAttributes.GetValue(this, AosAttribute.Luck) + TenthAnniversarySculpture.GetLuckBonus(this)
+	                                                                   + (PrestigeLevel > 1 && PrestigeLevelConfig.IsEnabled
+                                                                       ? PrestigeLevelConfig.LuckBonus : 0);
+	        }
+	    }
 
         public int RealLuck { 
             get

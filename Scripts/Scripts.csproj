@@ -220,6 +220,7 @@
     <Compile Include="Commands\Logging.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Commands\PrestigeLevel.cs" />
     <Compile Include="Commands\Profiling.cs">
       <SubType>Code</SubType>
     </Compile>

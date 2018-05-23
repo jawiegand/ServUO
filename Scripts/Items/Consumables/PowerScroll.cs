@@ -1,3 +1,4 @@
+using Server.Configs;
 using System;
 using System.Collections.Generic;
 
@@ -207,6 +208,34 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1049511, this.GetNameLocalized()); // Your ~1_type~ is too high for this power scroll.
                 return false;
+            }
+
+            if (PrestigeLevelConfig.IsEnabled)
+            {
+                switch (from.PrestigeLevel)
+                {
+                    case 0:
+                        if (PrestigeLevelConfig.BasePowerScrollMax >= Value)
+                        {
+                            from.SendMessage("At your current prestige level you can only use Power Scroll up to " + PrestigeLevelConfig.BasePowerScrollMax);
+                            return false;
+                        }
+                        break;
+                    case 1:
+                        if (PrestigeLevelConfig.LevelOnePowerScrollMax >= Value)
+                        {
+                            from.SendMessage("At your current prestige level you can only use Power Scroll up to " + PrestigeLevelConfig.LevelOnePowerScrollMax);
+                            return false;
+                        }
+                        break;
+                    case 2:
+                        if (PrestigeLevelConfig.LevelTwoPowerScrollMax >= Value)
+                        {
+                            from.SendMessage("At your current prestige level you can only use Power Scroll up to " + PrestigeLevelConfig.LevelTwoPowerScrollMax);
+                            return false;
+                        }
+                        break;
+                }
             }
 
             return true;

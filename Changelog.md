@@ -9,12 +9,12 @@
 * This is not reversible
 * Four levels
     * Level 0 - Base (770) skill cap, no bonus, OSI difficulty
-    * Level 1 - 1440 skill cap, + 2x OSI difficulty
-    * Level 2 - 2100 skill cap, +150 luck, + 4x OSI difficulty
-    * Level 3 - unlimited (70000) skill cap, +150 luck, 10% bonus to base Hits/Mana/Stam, varaible difficulty
+    * Level 1 - 1440 skill cap, 2x OSI difficulty
+    * Level 2 - 2100 skill cap, +150 luck, 4x OSI difficulty
+    * Level 3 - unlimited (70000) skill cap, +150 luck, 450 stat cap, 10% bonus to base Hits/Mana/Stam, varaible difficulty
         * If a skill is 60.0 or below difficuly is 4x OSI
         * If a skill is 80.0 or below difficuly is 6x OSI
-        * If a skill is 100.0 of below difficuly is 8x OSI
+        * If a skill is 100.0 or below difficuly is 8x OSI
         * If a skill is above 100.0 difficulty is 10x OSI
 * In addition to bonuses in-game name color changes based on level
     * Level 1 - Bronze
@@ -25,7 +25,12 @@
     * Level 1 can consume scrolls up to 110
     * Level 2 can consume scrolls up to 115
     * Level 3 can consume any scroll
-* Any player who is PL 1 or greater no longer get Guaranteed Gain System (GGS)
+* Prestige Level can be adjusted up by use of Scrolls Of Prestige
+    * Level 1 - This item can be obtained from the Prestige Vendor in Britan for 1,500,000 gold
+    * Level 2 - This item can be obtained from the Prestige Vendor in Britan for 3,000,000 gold
+    * Level 3 - This item can be obtained from champion drops
+* Can only use Scroll Of Prestige if you are at cap skill cap for current PL.
+* Any player who is PL 1 or greater no longer gets Guaranteed Gain System (GGS)
 * Various configuration bits to control PL system (see: PrestigeLevel.cfg in /Config)
 * PL command - Will let players know what PL they are at
 ### Removed

@@ -26,7 +26,12 @@ namespace Server.Commands
             }
             else
             {
-                e.Mobile.SendMessage("Prestige Level " + e.Mobile.PrestigeLevel);
+                Mobile senderMob = e.Mobile;
+                if (senderMob != null)
+                {
+                senderMob.SendMessage("Prestige Level " + senderMob.PrestigeLevel +
+                    " (" + senderMob.SkillsTotal + "/" + senderMob.SkillsCap + ")");
+                }
             }
         }
     }

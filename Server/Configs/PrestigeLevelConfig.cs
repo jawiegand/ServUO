@@ -17,8 +17,8 @@ namespace Server.Configs
 
         private static string base_skills_cap = CONFIG_NAME + "BaseSkillCap";
         private static string level_one_skills_cap = CONFIG_NAME + "LevelOneSkillCap";
-        private static string level_two_skills_cap = CONFIG_NAME + "LevelTwoSkillsCap";
-        private static string level_three_skills_cap = CONFIG_NAME + "LevelThreeSkillsCap";
+        private static string level_two_skills_cap = CONFIG_NAME + "LevelTwoSkillCap";
+        private static string level_three_skills_cap = CONFIG_NAME + "LevelThreeSkillCap";
 
         private static string base_power_scroll_max = CONFIG_NAME + "BasePowerScrollMax";
         private static string level_one_power_scroll_max = CONFIG_NAME + "LevelOnePowerScrollMax";

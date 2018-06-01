@@ -715,6 +715,7 @@
     <Compile Include="Items\Consumables\ScrollofPrestige.cs" />
     <Compile Include="Items\Consumables\SkinTingeingTincture.cs" />
     <Compile Include="Items\Consumables\TastyTreat.cs" />
+    <Compile Include="Items\Containers\ShipsStrongbox.cs" />
     <Compile Include="Items\Decorative\AllegiancePouch.cs" />
     <Compile Include="Items\Decorative\Bridle.cs" />
     <Compile Include="Items\Decorative\DecorativeCarpet.cs" />
@@ -1933,6 +1934,7 @@
     <Compile Include="Mobiles\Normal\BlackSolenWarrior.cs" />
     <Compile Include="Mobiles\Normal\BlackSolenWorker.cs" />
     <Compile Include="Mobiles\Normal\BloodElemental.cs" />
+    <Compile Include="Mobiles\Normal\Grubber.cs" />
     <Compile Include="Mobiles\Normal\Lifestealer.cs" />
     <Compile Include="Mobiles\Normal\DragonWolf.cs" />
     <Compile Include="Mobiles\Normal\DreadWarhorse.cs" />

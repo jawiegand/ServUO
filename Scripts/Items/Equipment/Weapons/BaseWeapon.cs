@@ -1768,8 +1768,13 @@ namespace Server.Items
 					{
 						if (weapon != null)
 						{
+                            var combatant = defender.Combatant;
+
 							defender.FixedParticles(0x3779, 1, 15, 0x158B, 0x0, 0x3, EffectLayer.Waist);
 							weapon.OnSwing(defender, attacker);
+
+                            if (combatant != null && defender.Combatant != combatant && combatant.Alive)
+                                defender.Combatant = combatant;
 						}
 
 						CounterAttack.StopCountering(defender);
@@ -1829,6 +1834,10 @@ namespace Server.Items
 				if (toHit != null)
 				{
                     toHit.OnHit(this, damage); // call OnHit to lose durability
+
+                    if (attacker is VeriteElemental || attacker is ValoriteElemental)
+                        VeriteElemental.OnHit(defender, (Item)toHit, damage);
+
                     damage -= XmlAttach.OnArmorHit(attacker, defender, (Item)toHit, this, originalDamage);
 				}
 			}
@@ -2410,16 +2419,6 @@ namespace Server.Items
 
 			damage = AOS.Scale(damage, 100 + percentageBonus);
 			#endregion
-
-			if (attacker is BaseCreature)
-			{
-				((BaseCreature)attacker).AlterMeleeDamageTo(defender, ref damage);
-			}
-
-			if (defender is BaseCreature)
-			{
-				((BaseCreature)defender).AlterMeleeDamageFrom(attacker, ref damage);
-			}
 
             damage = AbsorbDamage(attacker, defender, damage);
 
@@ -6124,11 +6123,6 @@ namespace Server.Items
 
 				CraftContext context = craftSystem.GetContext(from);
 
-				if (context != null && context.DoNotColor)
-				{
-					Hue = 0;
-				}
-
 				if (Quality == ItemQuality.Exceptional)
 				{
 					Attributes.WeaponDamage += 35;
@@ -6159,13 +6153,6 @@ namespace Server.Items
 					if (thisResource == ((BaseRunicTool)tool).Resource)
 					{
 						Resource = thisResource;
-
-						CraftContext context = craftSystem.GetContext(from);
-
-						if (context != null && context.DoNotColor)
-						{
-							Hue = 0;
-						}
 
 						switch (thisResource)
 						{

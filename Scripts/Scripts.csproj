@@ -712,7 +712,7 @@
     <Compile Include="Items\Books\SpecialScrollBooks\SpecialScrollBookGump.cs" />
     <Compile Include="Items\Consumables\DeliciouslyTastyTreat.cs" />
     <Compile Include="Items\Consumables\IrresistiblyTastyTreat.cs" />
-    <Compile Include="Items\Consumables\ScrollofPrestige.cs" />
+    <Compile Include="Items\Consumables\PrestigeScroll.cs" />
     <Compile Include="Items\Consumables\SkinTingeingTincture.cs" />
     <Compile Include="Items\Consumables\TastyTreat.cs" />
     <Compile Include="Items\Containers\ShipsStrongbox.cs" />
@@ -2221,6 +2221,7 @@
     <Compile Include="Mobiles\NPCs\Kodar.cs" />
     <Compile Include="Mobiles\NPCs\Lenley.cs" />
     <Compile Include="Mobiles\NPCs\Percolem.cs" />
+    <Compile Include="Mobiles\NPCs\PrestigeVendor.cs" />
     <Compile Include="Mobiles\NPCs\QuartermasterFlint.cs" />
     <Compile Include="Mobiles\NPCs\Regina.cs" />
     <Compile Include="Mobiles\NPCs\ShrineHealer.cs" />
@@ -12366,6 +12367,7 @@
     <Compile Include="VendorInfo\SBPlateArmor.cs" />
     <Compile Include="VendorInfo\SBPlayerBarkeeper.cs" />
     <Compile Include="VendorInfo\SBPoleArmWeapon.cs" />
+    <Compile Include="VendorInfo\SBPrestigeVendor.cs" />
     <Compile Include="VendorInfo\SBProvisioner.cs" />
     <Compile Include="VendorInfo\SBRancher.cs" />
     <Compile Include="VendorInfo\SBRangedWeapon.cs" />

@@ -193,28 +193,5 @@ namespace Server.Items
 
             return false;
         }
-
-        private class WarningPrompt : Prompt
-        {
-            private readonly PrestigeScroll m_PrestigeScroll;
-            public WarningPrompt(PrestigeScroll scroll)
-            {
-                m_PrestigeScroll = scroll;
-            }
-
-            public override void OnResponse(Mobile from, string text)
-            {
-                if (String.Equals(text, "y", StringComparison.OrdinalIgnoreCase) ||
-                    String.Equals(text, "yes", StringComparison.OrdinalIgnoreCase))
-                {
-
-
-                }
-                else
-                {
-                    from.SendMessage("The scroll will not be consumed.");
-                }
-            }
-        }
     }
 }

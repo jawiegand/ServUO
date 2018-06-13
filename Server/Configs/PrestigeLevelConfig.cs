@@ -137,8 +137,8 @@ namespace Server.Configs
             LevelTwoPowerScrollMax = Config.Get(level_two_power_scroll_max, 115);
 
             // PS validation
-            LevelOneSkillCap = Math.Max(BasePowerScrollMax, LevelOnePowerScrollMax);
-            LevelTwoSkillCap = Math.Max(LevelOneSkillCap, LevelTwoSkillCap);
+            LevelOnePowerScrollMax = Math.Max(BasePowerScrollMax, LevelOnePowerScrollMax);
+            LevelTwoPowerScrollMax = Math.Max(LevelOnePowerScrollMax, LevelTwoPowerScrollMax);
 
             LuckBonus = Config.Get(luck_bonus, 150);
             StatBonus = Config.Get(stat_bonus, 140);

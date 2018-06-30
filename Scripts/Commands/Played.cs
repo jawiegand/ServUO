@@ -23,9 +23,9 @@ namespace Server.Commands
             {
                 TimeSpan gameTime = ((PlayerMobile)senderMob).GameTime;
 
-                string day = gameTime.Minutes == 1 ? "Day" : "Days";
+                string day = gameTime.Days == 1 ? "Day" : "Days";
                 string hour = gameTime.Hours == 1 ? "Hour" : "Hours";
-                string minute = gameTime.Seconds == 1 ? "Minute" : "Minutes";
+                string minute = gameTime.Minutes == 1 ? "Minute" : "Minutes";
 
                 string playTime = String.Format("{0} {1}, {2} {3}, {4} {5}",
                     day,

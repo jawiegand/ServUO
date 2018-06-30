@@ -7,7 +7,7 @@ using Server.Multis;
 using Server.Network;
 using System.Linq;
 using Server.Engines.Craft;
-
+using Server.Configs;
 
 namespace Server.Items
 {
@@ -23,6 +23,7 @@ namespace Server.Items
 
         private int m_ActiveItemID;
         private int m_InactiveItemID;
+        private int m_PrestigeLevelValue;
 
         private SecureLevel m_Level;
 
@@ -136,6 +137,15 @@ namespace Server.Items
 
                 InvalidateProperties();
             }
+        }
+
+        /// <summary>
+        /// Returns the prestige level of the stored skill.
+        /// </summary>
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int PrestigeLevelValue {
+            get { return m_PrestigeLevelValue; }
+            set { m_PrestigeLevelValue = value; }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -276,6 +286,13 @@ namespace Server.Items
             {
                 return true;
             }
+        }
+
+        // Call to set all values needed to be 0 on reset
+        protected void Reset()
+        {
+            m_SkillValue = 0;
+            m_PrestigeLevelValue = 0;
         }
 
         public virtual void OnSkillTransfered(Mobile from)
@@ -477,6 +494,7 @@ namespace Server.Items
 
                 m_Stone.Skill = m_Skill.SkillName;
                 m_Stone.SkillValue = m_Skill.Base;
+                m_Stone.PrestigeLevelValue = from.PrestigeLevel;
 
                 m_Skill.Base = 0.0;
 
@@ -599,6 +617,15 @@ namespace Server.Items
                     return;
                 }
 
+                #region Prestige System
+                if (PrestigeLevelConfig.IsEnabled && from.PrestigeLevel > m_Stone.PrestigeLevelValue)
+                {
+                    from.SendMessage(String.Format("A prestige level of {0} or lower is required to used this stone.",
+                        m_Stone.PrestigeLevelValue));
+                    return;
+                }
+                #endregion
+
                 SkillName skill = m_Stone.Skill;
                 double skillValue = m_Stone.SkillValue;
                 Skill fromSkill = from.Skills[m_Stone.Skill];
@@ -701,7 +728,7 @@ namespace Server.Items
                 }
 
                 fromSkill.Base = skillValue;
-                m_Stone.SkillValue = 0.0;
+                m_Stone.Reset();
 
                 from.SendLocalizedMessage(1070713); // You have successfully absorbed the Soulstone's skill points.
 
@@ -769,7 +796,7 @@ namespace Server.Items
                 if (!m_Stone.CheckUse(from))
                     return;
 
-                m_Stone.SkillValue = 0.0;
+                m_Stone.Reset();
                 from.SendLocalizedMessage(1070726); // You have successfully deleted the Soulstone's skill points.
             }
         }
@@ -828,7 +855,10 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(3); // version
+            writer.WriteEncodedInt(4); // version
+
+            //version 4
+            writer.Write(PrestigeLevelValue);
 
             //version 3
             writer.Write((string)m_LastUserName);
@@ -854,6 +884,11 @@ namespace Server.Items
 
             switch( version )
             {
+                case 4:
+                    {
+                        PrestigeLevelValue = reader.ReadInt();
+                        goto case 3;
+                    }
                 case 3:
                     {
                         m_LastUserName = reader.ReadString();

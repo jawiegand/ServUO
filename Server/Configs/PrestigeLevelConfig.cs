@@ -120,7 +120,7 @@ namespace Server.Configs
 
         static PrestigeLevelConfig()
         {
-            IsEnabled = Config.Get(is_enabled, false);
+            IsEnabled = Config.Get(is_enabled, true);
 
             BaseSkillCap = Config.Get(base_skills_cap, 7000);
             LevelOneSkillCap = Config.Get(level_one_skills_cap, 14000);

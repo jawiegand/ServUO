@@ -215,21 +215,22 @@ namespace Server.Items
                 switch (from.PrestigeLevel)
                 {
                     case 0:
-                        if (PrestigeLevelConfig.BasePowerScrollMax >= Value)
+                        if (Value > PrestigeLevelConfig.BasePowerScrollMax)
+                        if(true)
                         {
                             from.SendMessage("At your current prestige level you can only use Power Scroll up to " + PrestigeLevelConfig.BasePowerScrollMax);
                             return false;
                         }
                         break;
                     case 1:
-                        if (PrestigeLevelConfig.LevelOnePowerScrollMax >= Value)
+                        if (Value > PrestigeLevelConfig.LevelOnePowerScrollMax)
                         {
                             from.SendMessage("At your current prestige level you can only use Power Scroll up to " + PrestigeLevelConfig.LevelOnePowerScrollMax);
                             return false;
                         }
                         break;
                     case 2:
-                        if (PrestigeLevelConfig.LevelTwoPowerScrollMax >= Value)
+                        if (Value > PrestigeLevelConfig.LevelTwoPowerScrollMax)
                         {
                             from.SendMessage("At your current prestige level you can only use Power Scroll up to " + PrestigeLevelConfig.LevelTwoPowerScrollMax);
                             return false;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Server.Items;
 using Server.Engines.CannedEvil;
+using Server.Configs;
 
 namespace Server.Mobiles
 {
@@ -327,6 +328,16 @@ namespace Server.Mobiles
                 if (m is PlayerMobile)
                 {
                     PlayerMobile pm = (PlayerMobile)m;
+
+                    if (PrestigeLevelConfig.IsEnabled)
+                    {
+                        if(pm.PrestigeLevel == 2 && !pm.PrestigeScrollThreeHasDropped)
+                        {
+                            pm.PrestigeScrollThreeHasDropped = true;
+                            pm.SendMessage("You have received a prestige scroll III");
+                            pm.AddToBackpack(new PrestigeScroll(level: 3));
+                        }
+                    }
 
                     for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
                     {

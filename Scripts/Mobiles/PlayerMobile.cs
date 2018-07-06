@@ -655,6 +655,9 @@ namespace Server.Mobiles
 			}
 		}
 
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PrestigeScrollThreeHasDropped { get; set; }
+
 		#region Scroll of Alacrity
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime AcceleratedStart { get; set; }
@@ -4419,6 +4422,9 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 37:
+                    PrestigeScrollThreeHasDropped = reader.ReadBool();
+                    goto case 36;
                 case 36: // Reward Stable Slots
                     RewardStableSlots = reader.ReadInt();
                     goto case 35;
@@ -4847,7 +4853,9 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(36); // version
+			writer.Write(37); // version
+
+            writer.Write(PrestigeScrollThreeHasDropped);
 
             writer.Write(RewardStableSlots);
 

@@ -27,6 +27,9 @@ namespace Server.Mobiles.NPCs
                 return this.m_SBInfos;
             }
         }
+
+        public override bool HasHonestyDiscount { get { return false; } }
+
         public override void InitSBInfo()
         {
             this.m_SBInfos.Add(new SBPrestigeVendor());
